@@ -1,65 +1,78 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="min-h-screen bg-[#0b0f1a] text-slate-100">
+      <div className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,#2563eb33,transparent_60%),radial-gradient(circle_at_70%_20%,#22d3ee33,transparent_55%),radial-gradient(circle_at_bottom,#f59e0b33,transparent_55%)]" />
+        <div className="absolute -top-32 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[#1f2937] blur-3xl opacity-50" />
+        <main className="relative mx-auto flex max-w-5xl flex-col gap-10 px-6 pb-16 pt-20">
+          <section className="flex flex-col gap-6 animate-fade">
+            <div className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-900/70 px-4 py-2 text-xs uppercase tracking-[0.3em] text-slate-300">
+              Next.js BFF Demo
+            </div>
+            <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+              現代化登入 / 註冊 / 用戶查詢流程
+            </h1>
+            <p className="max-w-2xl text-base text-slate-300 sm:text-lg">
+              所有資料皆以 BFF 假資料回傳，專注於 UI 與流程展示。你可以從下方進入三個功能頁。
+            </p>
+          </section>
+
+          <section className="grid gap-6 md:grid-cols-3 stagger">
+            <Link
+              href="/login"
+              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur transition hover:-translate-y-1 hover:border-cyan-400/60"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              <p className="text-xs uppercase tracking-[0.35em] text-cyan-300">Login</p>
+              <h2 className="mt-3 text-2xl font-semibold text-white">登入</h2>
+              <p className="mt-2 text-sm text-slate-400">
+                測試固定帳號登入與 token 回傳。
+              </p>
+            </Link>
+            <Link
+              href="/register"
+              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur transition hover:-translate-y-1 hover:border-amber-300/60"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              <p className="text-xs uppercase tracking-[0.35em] text-amber-300">
+                Register
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold text-white">註冊</h2>
+              <p className="mt-2 text-sm text-slate-400">
+                模擬建立新用戶並回傳假資料。
+              </p>
+            </Link>
+            <Link
+              href="/users"
+              className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur transition hover:-translate-y-1 hover:border-emerald-300/60"
+            >
+              <p className="text-xs uppercase tracking-[0.35em] text-emerald-300">
+                Lookup
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold text-white">用戶查詢</h2>
+              <p className="mt-2 text-sm text-slate-400">
+                透過 ID 查詢用戶詳情。
+              </p>
+            </Link>
+          </section>
+
+          <section className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 text-sm text-slate-300 animate-rise">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.35em] text-slate-400">
+                  API Endpoints
+                </p>
+                <p className="mt-2 text-base text-white">
+                  /api/login · /api/register · /api/users/[id]
+                </p>
+              </div>
+              <div className="rounded-full border border-slate-700 px-4 py-2 text-xs text-slate-400">
+                All data mocked in BFF
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   );
 }
