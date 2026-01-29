@@ -13,10 +13,21 @@ type FieldProps = {
   required?: boolean;
 };
 
+type SelectFieldProps = {
+  label: string;
+  value: string;
+  options: Array<string | number>;
+  onChange: (value: string) => void;
+  tone?: "cyan" | "amber" | "emerald";
+  required?: boolean;
+  loading?: boolean;
+  placeholder?: string;
+};
+
 const toneMap = {
-  cyan: "focus:border-cyan-400 focus:ring-cyan-500/40",
-  amber: "focus:border-amber-400 focus:ring-amber-400/40",
-  emerald: "focus:border-emerald-400 focus:ring-emerald-400/40",
+  cyan: "focus:border-cyan-400 focus:ring-cyan-400/30",
+  amber: "focus:border-amber-400 focus:ring-amber-400/30",
+  emerald: "focus:border-emerald-400 focus:ring-emerald-400/30",
 };
 
 export function Field({
@@ -30,20 +41,78 @@ export function Field({
   required = false,
 }: FieldProps) {
   return (
-    <label className="flex flex-col gap-2 text-sm text-slate-300">
+    <label className="flex flex-col gap-2 text-sm text-slate-600">
       <span className="flex items-center justify-between">
         {label}
-        {required && <span className="text-[11px] text-slate-500">必填</span>}
+        {required && <span className="text-[11px] text-slate-400">必填</span>}
       </span>
       <input
         type={type}
         value={value}
         required={required}
         onChange={(event) => onChange(event.target.value)}
-        className={`rounded-xl border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none focus:ring-2 ${toneMap[tone]}`}
+        className={`rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 ${toneMap[tone]}`}
         placeholder={placeholder}
       />
-      {error ? <span className="text-xs text-rose-300">{error}</span> : null}
+      {error ? <span className="text-xs text-rose-500">{error}</span> : null}
+    </label>
+  );
+}
+
+export function ReadOnlyField({
+  label,
+  value,
+  tone = "cyan",
+}: {
+  label: string;
+  value: string;
+  tone?: "cyan" | "amber" | "emerald";
+}) {
+  return (
+    <label className="flex flex-col gap-2 text-sm text-slate-600">
+      <span>{label}</span>
+      <input
+        type="text"
+        value={value}
+        readOnly
+        className={`rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700 focus:outline-none focus:ring-2 ${toneMap[tone]}`}
+      />
+    </label>
+  );
+}
+
+export function SelectField({
+  label,
+  value,
+  options,
+  onChange,
+  tone = "cyan",
+  required = false,
+  loading = false,
+  placeholder = "請選擇",
+}: SelectFieldProps) {
+  return (
+    <label className="flex flex-col gap-2 text-sm text-slate-600">
+      <span className="flex items-center justify-between">
+        {label}
+        {required && <span className="text-[11px] text-slate-400">必填</span>}
+      </span>
+      <select
+        value={value}
+        required={required}
+        disabled={loading}
+        onChange={(event) => onChange(event.target.value)}
+        className={`rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 ${toneMap[tone]} disabled:cursor-not-allowed disabled:opacity-60`}
+      >
+        <option value="" disabled>
+          {loading ? "載入中..." : placeholder}
+        </option>
+        {options.map((option) => (
+          <option key={option} value={String(option)}>
+            {String(option)}
+          </option>
+        ))}
+      </select>
     </label>
   );
 }
@@ -85,8 +154,8 @@ export function ResultPanel({
   if (!result) return null;
 
   return (
-    <div className="mt-5 rounded-xl border border-slate-800 bg-slate-950/70 p-4 text-xs text-slate-300">
-      <p className="mb-2 text-[11px] uppercase tracking-[0.3em] text-slate-500">
+    <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+      <p className="mb-2 text-[11px] uppercase tracking-[0.3em] text-slate-400">
         {title}
       </p>
       <pre className="whitespace-pre-wrap">
@@ -111,19 +180,21 @@ export function CardShell({
 }) {
   const badgeClass =
     badgeTone === "cyan"
-      ? "text-cyan-300"
+      ? "text-cyan-600"
       : badgeTone === "amber"
-      ? "text-amber-300"
-      : "text-emerald-300";
+      ? "text-amber-600"
+      : "text-emerald-600";
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-slate-900/70 p-6 shadow-[0_20px_40px_-30px_rgba(15,23,42,0.8)] backdrop-blur animate-rise">
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_20px_40px_-30px_rgba(148,163,184,0.5)] backdrop-blur animate-rise">
       <div className="mb-6">
         <p className={`text-xs uppercase tracking-[0.35em] ${badgeClass}`}>
           {badge}
         </p>
-        <h2 className="mt-3 text-2xl font-semibold text-white">{title}</h2>
-        <p className="mt-2 text-sm text-slate-400">{description}</p>
+        <h2 className="mt-3 text-2xl font-semibold text-slate-900">
+          {title}
+        </h2>
+        <p className="mt-2 text-sm text-slate-500">{description}</p>
       </div>
       {children}
     </div>

@@ -1,0 +1,29 @@
+#功能描述: Maintain TL5 Function
+
+#詳細描述: 建制一個Web頁面, Web畫面有一個表單, 可以送API儲存資料
+
+#此專案為前端專案
+
+#技術: 使用React 18 + Next.Js 14的版本實現
+後端需要使用Next.JS作為BFF層
+
+#目前專案的註冊頁面功能移除
+
+#表單欄位如下
+1. A(必填): input text
+2. B(必填): input text
+3. Create Time: 默認瀏覽器時間
+4. Update Time: 默認瀏覽器時間
+5. Feb: 下拉選單, 選項從以下API來, API response以下API範例
+6. Geometry: 下拉選單, 選項從以下API來, API response以下API範例.
+
+{
+ "code": 0,
+ "msg": "成功",
+ "data": {
+    "Feb": [1,2,3,4,5]
+    "Geometry": ["A","B","C"]
+ }
+}
+
+備注：目前還沒有真的API 幫我mock資料

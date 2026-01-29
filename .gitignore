@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /out/
+.next/cache/
 
 # production
 /build
@@ -23,6 +24,11 @@
 # misc
 .DS_Store
 *.pem
+.eslintcache
+.swc
+.turbo
+.vscode/
+.idea/
 
 # debug
 npm-debug.log*
