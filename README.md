@@ -55,3 +55,7 @@ NEXTAUTH_SECRET=replace_with_a_long_random_secret_at_least_32_chars
 1. 正式環境請使用 HTTPS。
 2. `NEXTAUTH_SECRET` 請使用高強度隨機字串。
 3. 請勿把 `.env.local` 提交到版本控制。
+
+## 7. 流程文件
+
+- URL 跳轉與時序圖：`docs/line-login-url-flow.md`
