@@ -2,8 +2,8 @@ import { getCurrentUser } from '@/lib/session';
 
 export default async function HomePage() {
   // 這裡是 Server Component。
-  // 每次請求進來時，Next.js 會在伺服器端讀 cookie，判斷是否有登入中的 session。
-  // 資料來源是 callback API 建立的 line_demo_session：
+  // 每次請求進來時，Next.js 會在伺服器端讀 cookie，判斷是否有登入中的 JWT。
+  // 資料來源是 callback API 建立的 line_demo_session（JWT）：
   // callback 拿 code -> 換 token -> 取 profile(displayName) -> 寫入 cookie。
   const user = await getCurrentUser();
 

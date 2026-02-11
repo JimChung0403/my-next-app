@@ -43,8 +43,8 @@ export async function GET(request: NextRequest) {
     // 這一步才會拿到 displayName / userId / pictureUrl。
     const profile = await fetchLineProfile(token.access_token);
 
-    // Step 7: 把必要的使用者資料寫進 session cookie，前端後續就能識別登入狀態。
-    // 目前 cookie 儲存的是「簽章後 payload」，不是 LINE 的 access_token。
+    // Step 7: 把必要的使用者資料寫進 JWT cookie，前端後續就能識別登入狀態。
+    // 目前 cookie 儲存的是「我們自己簽發的 JWT」，不是 LINE 的 access_token。
     const sessionToken = createSessionToken({
       userId: profile.userId,
       displayName: profile.displayName,

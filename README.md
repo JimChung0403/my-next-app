@@ -43,8 +43,8 @@ SESSION_SECRET=replace_with_a_long_random_secret_at_least_32_chars
 4. 使用者在 LINE 同意授權後，LINE 回呼 `GET /api/auth/line/callback?code=...&state=...`
 5. callback API 驗證 `state`，用 `code` 向 LINE Token API 換 `access_token`
 6. callback API 使用 `access_token` 呼叫 LINE Profile API 取得 `displayName`
-7. 後端建立 session cookie 並導回首頁
-8. 首頁 Server Component 讀取 session，顯示姓名
+7. 後端建立 JWT cookie 並導回首頁
+8. 首頁 Server Component 驗證 JWT 後顯示姓名
 
 ### B. 登出流程
 
@@ -60,13 +60,13 @@ SESSION_SECRET=replace_with_a_long_random_secret_at_least_32_chars
 - `app/api/auth/line/callback/route.ts`: OAuth callback（code 換 token、取 profile、建立 session）
 - `app/api/auth/logout/route.ts`: 清除 session
 - `lib/line-oauth.ts`: 與 LINE API 溝通
-- `lib/session.ts`: session token 簽章與驗證
+- `lib/session.ts`: JWT 簽發與驗證（HS256）
 - `lib/env.ts`: 環境變數檢查
 - `types/auth.ts`: 型別定義
 
 ## 6. 安全提醒（這是 sample，但要知道）
 
-1. 這份 sample 用 HMAC 簽章 cookie；正式環境可改用成熟 session/JWT 方案。
+1. 這份 sample 使用自簽 JWT（HS256）放在 HttpOnly cookie。
 2. 一定要驗證 OAuth `state`（此範例已做）。
 3. 正式環境請使用 `https`，並確保 cookie `secure: true`。
 4. 若要更嚴謹，應驗證 `id_token` 簽章與 claim。

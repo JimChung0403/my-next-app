@@ -5,6 +5,8 @@ import type { SessionPayload, SessionUser } from '@/types/auth';
 
 export const SESSION_COOKIE_NAME = 'line_demo_session';
 const SESSION_TTL_SECONDS = 60 * 60; // 1 hour
+const JWT_ALG = 'HS256';
+const JWT_TYP = 'JWT';
 
 function toBase64Url(input: Buffer | string): string {
   return Buffer.from(input)
@@ -27,25 +29,31 @@ function sign(value: string): string {
 }
 
 export function createSessionToken(user: SessionUser): string {
+  const header = {
+    alg: JWT_ALG,
+    typ: JWT_TYP
+  };
   const payload: SessionPayload = {
     user,
     exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS
   };
 
-  // 教學重點：token 結構 = payload.signature
-  // payload 是可讀資料，signature 防止使用者任意竄改 payload。
+  // 教學重點：JWT 結構 = base64url(header).base64url(payload).signature
+  // payload 是可讀資料；signature 用來確保 header/payload 沒被竄改。
+  const headerEncoded = toBase64Url(JSON.stringify(header));
   const payloadEncoded = toBase64Url(JSON.stringify(payload));
-  const signature = sign(payloadEncoded);
-  return `${payloadEncoded}.${signature}`;
+  const signingInput = `${headerEncoded}.${payloadEncoded}`;
+  const signature = sign(signingInput);
+  return `${signingInput}.${signature}`;
 }
 
 export function verifySessionToken(token: string): SessionPayload | null {
-  const [payloadEncoded, signature] = token.split('.');
-  if (!payloadEncoded || !signature) {
+  const [headerEncoded, payloadEncoded, signature] = token.split('.');
+  if (!headerEncoded || !payloadEncoded || !signature) {
     return null;
   }
 
-  const expectedSignature = sign(payloadEncoded);
+  const expectedSignature = sign(`${headerEncoded}.${payloadEncoded}`);
   const provided = Buffer.from(signature);
   const expected = Buffer.from(expectedSignature);
 
@@ -59,6 +67,11 @@ export function verifySessionToken(token: string): SessionPayload | null {
   }
 
   try {
+    const header = JSON.parse(fromBase64Url(headerEncoded).toString('utf8')) as { alg?: string; typ?: string };
+    if (header.alg !== JWT_ALG || header.typ !== JWT_TYP) {
+      return null;
+    }
+
     const payload = JSON.parse(fromBase64Url(payloadEncoded).toString('utf8')) as SessionPayload;
     const now = Math.floor(Date.now() / 1000);
     if (payload.exp <= now) {
