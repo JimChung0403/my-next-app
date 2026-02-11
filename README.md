@@ -3,8 +3,12 @@
 這是一個給新手工程師學習的最小可執行範例。
 
 - 技術：`Next.js 14` + `React 18` + `TypeScript`
-- 功能：LINE OAuth2 登入 / 登出
+- 功能：LINE OAuth2 登入 / 登出（兩種版本）
 - 登入成功後：顯示 LINE 使用者姓名（`displayName`）
+
+頁面：
+- `/`：手刻 OAuth + JWT 版
+- `/nextauth`：NextAuth 版（保留 Step 1~8 註解方便對照）
 
 ## 1. 安裝與啟動
 
@@ -20,8 +24,10 @@ npm run dev
 
 到 LINE Developers 建立 Login Channel，並設定：
 
-1. Callback URL: `http://localhost:3000/api/auth/line/callback`
-2. 取得 `Channel ID` 與 `Channel Secret`
+1. Callback URL（手刻版）: `http://localhost:3000/api/auth/line/callback`
+2. Callback URL（NextAuth 版）: `http://localhost:3000/api/auth/callback/line`
+3. 測試時請二選一設定 callback，因為同一時間 LINE channel 只能使用你目前填的那個 URL
+4. 取得 `Channel ID` 與 `Channel Secret`
 
 ## 3. 環境變數 (`.env.local`)
 
@@ -31,6 +37,8 @@ LINE_CHANNEL_SECRET=YOUR_LINE_CHANNEL_SECRET
 APP_BASE_URL=http://localhost:3000
 LINE_REDIRECT_PATH=/api/auth/line/callback
 SESSION_SECRET=replace_with_a_long_random_secret_at_least_32_chars
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=replace_with_a_long_random_secret_at_least_32_chars
 ```
 
 ## 4. 前後端調用鏈路（教學重點）
@@ -56,13 +64,18 @@ SESSION_SECRET=replace_with_a_long_random_secret_at_least_32_chars
 ## 5. 檔案說明
 
 - `app/page.tsx`: UI + 登入/登出入口
+- `app/nextauth/page.tsx`: NextAuth 對照頁
+- `app/nextauth/auth-buttons.tsx`: NextAuth 的 signIn/signOut 入口
+- `app/api/auth/[...nextauth]/route.ts`: NextAuth OAuth handler
 - `app/api/auth/line/start/route.ts`: OAuth 起點（產生 state 並導向 LINE）
 - `app/api/auth/line/callback/route.ts`: OAuth callback（code 換 token、取 profile、建立 session）
 - `app/api/auth/logout/route.ts`: 清除 session
+- `lib/auth.ts`: NextAuth 設定（Line provider + callbacks/events/logger）
 - `lib/line-oauth.ts`: 與 LINE API 溝通
 - `lib/session.ts`: JWT 簽發與驗證（HS256）
 - `lib/env.ts`: 環境變數檢查
 - `types/auth.ts`: 型別定義
+- `types/next-auth.d.ts`: NextAuth Session/JWT 型別擴充
 
 ## 6. 安全提醒（這是 sample，但要知道）
 

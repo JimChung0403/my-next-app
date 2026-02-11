@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { getCurrentUser } from '@/lib/session';
 
 export default async function HomePage() {
@@ -14,6 +15,9 @@ export default async function HomePage() {
         <p>
           這個範例展示 Next.js 14 (App Router) 如何串接 LINE Login。
           目標是讓剛入行的工程師可以清楚看到「前端點擊 → 後端導向 → callback → session → 顯示使用者資料」的完整鏈路。
+        </p>
+        <p>
+          NextAuth 對照版：<Link href="/nextauth">/nextauth</Link>
         </p>
 
         {user ? (
